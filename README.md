@@ -152,6 +152,7 @@ All protected routes require header: `Authorization: Bearer <token>`
 | `backend/` | `npm run build` | `prisma generate && tsc` |
 | `backend/` | `npm start` | Run compiled `dist/index.js` |
 | `backend/` | `npm run seed` | Seed the database with test users |
+| `backend/` | `npm test` | Run automated tests (**pending — Session 3**, not yet implemented) |
 
 ---
 
