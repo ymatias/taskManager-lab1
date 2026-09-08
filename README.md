@@ -1,6 +1,6 @@
 # Task Manager Full Stack
 
-<!-- BADGE_CI -->
+[![CI](https://github.com/ymatias/taskManager-lab1/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/ymatias/taskManager-lab1/actions/workflows/ci.yml)
 
 Classroom assignment implementing a full-stack task manager with per-user authentication and
 persistence. Each user sees only their own tasks. The repo has two independent npm projects:
@@ -148,11 +148,19 @@ All protected routes require header: `Authorization: Bearer <token>`
 | `app/` | `npm run dev` | Start Vite dev server (port 5173) |
 | `app/` | `npm run build` | `tsc -b && vite build` |
 | `app/` | `npm run preview` | Preview the production build |
+| `app/` | `npm run lint` | Run ESLint |
 | `backend/` | `npm run dev` | Start API with nodemon + ts-node (port 3000) |
 | `backend/` | `npm run build` | `prisma generate && tsc` |
 | `backend/` | `npm start` | Run compiled `dist/index.js` |
 | `backend/` | `npm run seed` | Seed the database with test users |
+| `backend/` | `npm run lint` | Run ESLint |
 | `backend/` | `npm test` | Run automated tests (**pending — Session 3**, not yet implemented) |
+
+---
+
+## Continuous Integration
+
+Every push and Pull Request to `main` runs `.github/workflows/ci.yml`, which lints and builds both `app/` and `backend/` independently. See the badge at the top of this README for the current status of `main`.
 
 ---
 
