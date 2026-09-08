@@ -16,7 +16,7 @@ export default function EmptyState() {
     >
       <InboxIcon sx={{ fontSize: 40, color: "text.disabled", mb: 1 }} />
       <Typography color="text.secondary">
-        No hay tareas todavia. Agrega una nueva tarea.
+        No hay tareas todavía. Agrega una nueva tarea.
       </Typography>
     </Paper>
   );
