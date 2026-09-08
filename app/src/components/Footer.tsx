@@ -7,7 +7,6 @@ export default function Footer({ tasks }: FooterProps) {
   const total = tasks.length;
   const completed = tasks.filter((t) => t.completed).length;
   const pending = total - completed;
-  const debugFlag = true;
 
   const stats = [
     { label: "Total",       value: total,     color: "primary.main" },
