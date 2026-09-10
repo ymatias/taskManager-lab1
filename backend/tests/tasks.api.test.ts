@@ -31,12 +31,12 @@ class InMemoryTaskRepository implements ITaskRepository {
     return this.tasks.filter((task) => task.userId === userId);
   }
 
-  async findById(id: number, userId?: number): Promise<Task | null> {
+  async findById(id: number, userId: number): Promise<Task | null> {
     return (
       this.tasks.find(
         (task) =>
           task.id === id &&
-          (userId === undefined || task.userId === userId),
+          task.userId === userId,
       ) ?? null
     );
   }
@@ -56,7 +56,7 @@ class InMemoryTaskRepository implements ITaskRepository {
   async update(
     id: number,
     input: UpdateTaskInput,
-    userId?: number,
+    userId: number,
   ): Promise<Task> {
     const task = await this.findById(id, userId);
     if (!task) throw new Error("Task not found");
@@ -64,7 +64,7 @@ class InMemoryTaskRepository implements ITaskRepository {
     return task;
   }
 
-  async delete(id: number, userId?: number): Promise<void> {
+  async delete(id: number, userId: number): Promise<void> {
     const task = await this.findById(id, userId);
     if (!task) throw new Error("Task not found");
     this.tasks = this.tasks.filter((candidate) => candidate.id !== id);
@@ -114,6 +114,17 @@ describe("Tasks API", () => {
       .put("/tasks/1")
       .set("Authorization", authorizationFor(2))
       .send({ completed: true });
+
+    expect(response.status).toBe(404);
+    expect(response.body).toEqual({ error: "Task not found" });
+  });
+
+  it("does not let a user delete a task owned by another user", async () => {
+    const app = createTestApp(new InMemoryTaskRepository());
+
+    const response = await request(app)
+      .delete("/tasks/1")
+      .set("Authorization", authorizationFor(2));
 
     expect(response.status).toBe(404);
     expect(response.body).toEqual({ error: "Task not found" });

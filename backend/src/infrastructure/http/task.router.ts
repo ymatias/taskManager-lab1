@@ -42,7 +42,11 @@ export function createTaskRouter(
     try {
       const id = Number(req.params.id);
       const { text, completed } = req.body;
-      const task = await updateTaskUseCase.execute(id, { text, completed });
+      const task = await updateTaskUseCase.execute(
+        id,
+        { text, completed },
+        req.userId,
+      );
       res.json(task);
     } catch (error: any) {
       const status = error.message === "Task not found" ? 404 : 400;
@@ -54,7 +58,7 @@ export function createTaskRouter(
   router.delete("/:id", async (req: any, res: any) => {
     try {
       const id = Number(req.params.id);
-      await deleteTaskUseCase.execute(id);
+      await deleteTaskUseCase.execute(id, req.userId);
       res.json({ message: "Task deleted" });
     } catch (error: any) {
       const status = error.message === "Task not found" ? 404 : 400;
