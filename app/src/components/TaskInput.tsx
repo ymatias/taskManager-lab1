@@ -26,6 +26,7 @@ export default function TaskInput({ onAddTask }: TaskInputProps) {
       <TextField
         fullWidth
         size="small"
+        label="Nueva tarea"
         value={text}
         onChange={(e) => setText(e.target.value)}
         placeholder="Escribe una nueva tarea..."
