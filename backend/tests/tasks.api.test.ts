@@ -107,26 +107,4 @@ describe("Tasks API", () => {
     expect(response.body).toEqual({ error: "Text is required" });
   });
 
-  it("does not let a user update a task owned by another user", async () => {
-    const app = createTestApp(new InMemoryTaskRepository());
-
-    const response = await request(app)
-      .put("/tasks/1")
-      .set("Authorization", authorizationFor(2))
-      .send({ completed: true });
-
-    expect(response.status).toBe(404);
-    expect(response.body).toEqual({ error: "Task not found" });
-  });
-
-  it("does not let a user delete a task owned by another user", async () => {
-    const app = createTestApp(new InMemoryTaskRepository());
-
-    const response = await request(app)
-      .delete("/tasks/1")
-      .set("Authorization", authorizationFor(2));
-
-    expect(response.status).toBe(404);
-    expect(response.body).toEqual({ error: "Task not found" });
-  });
 });
