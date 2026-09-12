@@ -38,6 +38,14 @@ Thumbs.db
 app/local.settings.json
 local.settings.json
 
+# Coverage reports (Vitest / v8)
+coverage/
+
+# Playwright
+app/playwright-report/
+app/test-results/
+app/blob-report/
+
 # Temp Office files
 ~$*
 
