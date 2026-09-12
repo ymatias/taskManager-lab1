@@ -8,8 +8,8 @@ export class PrismaTaskRepository implements ITaskRepository {
     return this.prisma.task.findMany({ where: { userId } });
   }
 
-  async findById(id: number): Promise<Task | null> {
-    return this.prisma.task.findUnique({ where: { id } });
+  async findById(id: number, userId: number): Promise<Task | null> {
+    return this.prisma.task.findFirst({ where: { id, userId } });
   }
 
   async create(input: CreateTaskInput): Promise<Task> {
@@ -18,9 +18,13 @@ export class PrismaTaskRepository implements ITaskRepository {
     });
   }
 
-  async update(id: number, input: UpdateTaskInput): Promise<Task> {
+  async update(
+    id: number,
+    input: UpdateTaskInput,
+    userId: number,
+  ): Promise<Task> {
     return this.prisma.task.update({
-      where: { id },
+      where: { id, userId },
       data: {
         ...(input.text !== undefined && { text: input.text }),
         ...(input.completed !== undefined && { completed: input.completed }),
@@ -28,7 +32,7 @@ export class PrismaTaskRepository implements ITaskRepository {
     });
   }
 
-  async delete(id: number): Promise<void> {
-    await this.prisma.task.delete({ where: { id } });
+  async delete(id: number, userId: number): Promise<void> {
+    await this.prisma.task.delete({ where: { id, userId } });
   }
 }

@@ -1,0 +1,7 @@
+{
+  "name": "task-manager-lab1",
+  "private": true,
+  "scripts": {
+    "test": "npm --prefix app test && npm --prefix backend test"
+  }
+}

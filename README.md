@@ -14,7 +14,8 @@ persistence. Each user sees only their own tasks. The repo has two independent n
 - Backend: https://task-manager-backend-omega.vercel.app
 - Frontend: deploy `app/` to Vercel with `VITE_API_BASE_URL` pointing to the backend URL above
 
-There is no root `package.json`. Run all npm commands from inside `app/` or `backend/`.
+The root `package.json` orchestrates the complete test suite. Development,
+lint, and build commands remain inside `app/` and `backend/`.
 
 ---
 
@@ -145,22 +146,24 @@ All protected routes require header: `Authorization: Bearer <token>`
 
 | Location | Command | Description |
 |---|---|---|
+| repository root | `npm test` | Run the complete frontend and backend test suite |
 | `app/` | `npm run dev` | Start Vite dev server (port 5173) |
+| `app/` | `npm test` | Run unit and React component tests with Vitest |
 | `app/` | `npm run build` | `tsc -b && vite build` |
 | `app/` | `npm run preview` | Preview the production build |
 | `app/` | `npm run lint` | Run ESLint |
 | `backend/` | `npm run dev` | Start API with nodemon + ts-node (port 3000) |
+| `backend/` | `npm test` | Run API tests with Vitest and Supertest |
 | `backend/` | `npm run build` | `prisma generate && tsc` |
 | `backend/` | `npm start` | Run compiled `dist/index.js` |
 | `backend/` | `npm run seed` | Seed the database with test users |
 | `backend/` | `npm run lint` | Run ESLint |
-| `backend/` | `npm test` | Run automated tests (**pending — Session 3**, not yet implemented) |
 
 ---
 
 ## Continuous Integration
 
-Every push and Pull Request to `main` runs `.github/workflows/ci.yml`, which lints and builds both `app/` and `backend/` independently. See the badge at the top of this README for the current status of `main`.
+Every push and Pull Request to `main` runs `.github/workflows/ci.yml`, which installs dependencies, lints, tests, and builds `app/` and `backend/` independently. See the badge at the top of this README for the current status of `main`.
 
 ---
 
@@ -191,6 +194,9 @@ Every push and Pull Request to `main` runs `.github/workflows/ci.yml`, which lin
 ## Verification
 
 ```bash
+# Complete test suite: unit, component, and API tests
+npm test
+
 # Frontend type-check + build
 cd app && npm run build
 
