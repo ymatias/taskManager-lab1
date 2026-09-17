@@ -154,6 +154,21 @@ jobs:
           name: playwright-report
           path: app/playwright-report
 
+  verificar-secrets-produccion:
+    name: Verificar Secrets de producción (Sesión 6, Lab 1)
+    runs-on: ubuntu-latest
+    env:
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      JWT_SECRET: ${{ secrets.JWT_SECRET }}
+    steps:
+      - name: Confirmar que las variables sensibles están configuradas como GitHub Secrets
+        run: |
+          if [ -z "$DATABASE_URL" ] || [ -z "$JWT_SECRET" ]; then
+            echo "Faltan Secrets requeridos (DATABASE_URL y/o JWT_SECRET) en Settings > Secrets and variables > Actions."
+            exit 1
+          fi
+          echo "DATABASE_URL y JWT_SECRET están configurados como GitHub Secrets (valores nunca impresos en el log)."
+
   backend:
     name: Backend - Lint & Build
     runs-on: ubuntu-latest
