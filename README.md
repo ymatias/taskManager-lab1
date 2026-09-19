@@ -179,6 +179,27 @@ Every push and Pull Request to `main` runs `.github/workflows/ci.yml`, which ins
 - Set **Root Directory** = `app/` in Vercel project settings.
 - Add environment variable: `VITE_API_BASE_URL=https://task-manager-backend-omega.vercel.app`
 
+## Deployment (Railway)
+
+The GitHub Actions workflow deploys the backend directory to the Railway
+service named `backend` after the required checks pass.
+
+- A push to `main` deploys automatically to the `staging` environment.
+- A production deployment must be started with **Run workflow** and the exact
+  confirmation value `DEPLOY`.
+- GitHub Actions reads the Railway project token from the `RAILWAY_TOKEN`
+  repository secret. The token must never be committed.
+- Railway must define `DATABASE_URL`, `JWT_SECRET`, and `PORT` independently in
+  staging and production. Each environment must use a different PostgreSQL
+  database.
+- Configure `/health` as the Railway healthcheck path. The endpoint returns
+  HTTP 200 with `{ "status": "ok" }` when the process is ready.
+
+The backend container applies committed Prisma migrations before starting the
+server. To recover staging from a failed release, open the service deployment
+history in Railway, redeploy the last healthy revision, confirm `/health`, and
+then submit the corrected code through the normal branch and pull request flow.
+
 ---
 
 ## Security notes

@@ -169,19 +169,20 @@ jobs:
       - name: Instalar Railway CLI
         run: npm install -g @railway/cli
       - name: Desplegar a Railway (staging)
-        run: railway up --service backend --environment staging
+        run: railway up ./backend --path-as-root --service backend --environment staging --ci
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
 
   deploy-produccion:
     name: Deploy a Produccion (manual)
+    needs: [frontend, backend, e2e]
     if: github.event_name == 'workflow_dispatch' && github.event.inputs.confirmacion == 'DEPLOY'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - run: npm install -g @railway/cli
       - name: Desplegar a Railway (produccion)
-        run: railway up --service backend --environment production
+        run: railway up ./backend --path-as-root --service backend --environment production --ci
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
 
