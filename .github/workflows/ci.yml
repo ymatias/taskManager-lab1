@@ -5,6 +5,11 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
+  workflow_dispatch:
+    inputs:
+      confirmacion:
+        description: 'Escribe DEPLOY para confirmar el despliegue a produccion'
+        required: true
 
 permissions:
   contents: read
@@ -153,6 +158,33 @@ jobs:
         with:
           name: playwright-report
           path: app/playwright-report
+
+  deploy-staging:
+    name: Deploy a Staging
+    needs: [frontend, backend, e2e]
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Instalar Railway CLI
+        run: npm install -g @railway/cli
+      - name: Desplegar a Railway (staging)
+        run: railway up ./backend --path-as-root --service backend --environment staging --ci
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+
+  deploy-produccion:
+    name: Deploy a Produccion (manual)
+    needs: [frontend, backend, e2e]
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.confirmacion == 'DEPLOY'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: npm install -g @railway/cli
+      - name: Desplegar a Railway (produccion)
+        run: railway up ./backend --path-as-root --service backend --environment production --ci
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
 
   verificar-secrets-produccion:
     name: Verificar Secrets de producción (Sesión 6, Lab 1)

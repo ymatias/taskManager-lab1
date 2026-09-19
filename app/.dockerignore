@@ -1,0 +1,16 @@
+node_modules
+dist
+coverage
+playwright-report
+test-results
+.env
+.env.*
+!.env.example
+local.settings.json
+*.log
+npm-debug.log*
+.git
+.gitignore
+Dockerfile*
+README.md
+e2e

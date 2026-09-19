@@ -53,6 +53,9 @@ app.use(express.json());
 
 app.get("/", (_req: any, res: any) => res.send("Backend is working!"));
 
+// Healthcheck para Railway (Sesion 7)
+app.get("/health", (_req: any, res: any) => res.status(200).json({ status: "ok" }));
+
 // Swagger UI — available at /api-docs
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.get("/api-docs.json", (_req: any, res: any) => res.json(swaggerSpec));
@@ -71,8 +74,9 @@ app.use(
   )
 );
 
-// Local dev server — Vercel uses the exported app instead
-if (process.env.NODE_ENV !== "production") {
+// Railway and local development need a listening process. Vercel imports the
+// Express app as a serverless handler and exposes VERCEL=1 at runtime.
+if (!process.env.VERCEL) {
   const PORT = process.env.PORT || 3000;
   app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
