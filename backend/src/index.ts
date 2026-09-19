@@ -74,12 +74,6 @@ app.use(
   )
 );
 
-// Simulacro de caos (Sesion 7, Lab 3): variable de entorno mal nombrada a
-// proposito para forzar un fallo de arranque y ejercitar el rollback.
-if (!process.env.CHAOS_TEST_FLAG) {
-  throw new Error("CHAOS_TEST_FLAG no esta definida en el entorno");
-}
-
 // Railway and local development need a listening process. Vercel imports the
 // Express app as a serverless handler and exposes VERCEL=1 at runtime.
 if (!process.env.VERCEL) {
