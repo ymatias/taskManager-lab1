@@ -169,7 +169,7 @@ jobs:
       - name: Instalar Railway CLI
         run: npm install -g @railway/cli
       - name: Desplegar a Railway (staging)
-        run: railway up ./backend --path-as-root --service taskManager --environment staging --ci
+        run: railway up --service taskManager --environment staging --ci
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
 
@@ -182,7 +182,7 @@ jobs:
       - uses: actions/checkout@v4
       - run: npm install -g @railway/cli
       - name: Desplegar a Railway (produccion)
-        run: railway up ./backend --path-as-root --service taskManager --environment production --ci
+        run: railway up --service taskManager --environment production --ci
         env:
           # Los Project Tokens de Railway estan acotados a un solo ambiente:
           # produccion usa su propio token, distinto al de staging.
