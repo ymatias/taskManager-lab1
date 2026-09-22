@@ -1,0 +1,9 @@
+# Normaliza finales de linea en checkouts de Windows (Sesion 8): un
+# docker-entrypoint.sh con CRLF rompe su shebang dentro del contenedor Linux
+# ("exec ./docker-entrypoint.sh: no such file or directory").
+* text=auto eol=lf
+
+*.sh text eol=lf
+Dockerfile* text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
