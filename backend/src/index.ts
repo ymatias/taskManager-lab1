@@ -24,6 +24,7 @@ import { RegisterUseCase } from "./application/auth/register.use-case";
 // Infrastructure — HTTP routers
 import { createTaskRouter } from "./infrastructure/http/task.router";
 import { createAuthRouter } from "./infrastructure/http/auth.router";
+import { createHealthRouter } from "./infrastructure/http/health.router";
 
 // ── Composition Root ──────────────────────────────────────────────────────────
 
@@ -53,8 +54,8 @@ app.use(express.json());
 
 app.get("/", (_req: any, res: any) => res.send("Backend is working!"));
 
-// Healthcheck para Railway (Sesion 7)
-app.get("/health", (_req: any, res: any) => res.status(200).json({ status: "ok" }));
+// Healthcheck para Railway (Sesion 7) con version y ambiente (Sesion 8)
+app.use("/health", createHealthRouter());
 
 // Swagger UI — available at /api-docs
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));

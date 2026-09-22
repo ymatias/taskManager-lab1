@@ -28,7 +28,11 @@ RUN npm ci --omit=dev --no-audit --no-fund
 COPY --from=build /app/dist ./dist
 COPY docker-entrypoint.sh ./docker-entrypoint.sh
 
-RUN chmod +x ./docker-entrypoint.sh \
+# Normaliza finales de linea (defensivo ante checkouts de Windows con CRLF,
+# ver .gitattributes) y da permisos de ejecucion antes de bajar a un usuario
+# sin privilegios.
+RUN sed -i 's/\r$//' ./docker-entrypoint.sh \
+    && chmod +x ./docker-entrypoint.sh \
     && chown -R node:node /app
 
 USER node
